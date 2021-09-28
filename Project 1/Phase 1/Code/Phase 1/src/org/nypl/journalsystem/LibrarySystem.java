@@ -3,11 +3,14 @@ package org.nypl.journalsystem;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.*;
+import java.lang.*;
 
 public class LibrarySystem {
 	
 	public LibrarySystem() {
 		//TODO: Initialize system with default journals.
+
 	}
 	
 	public void load() throws FileNotFoundException, IOException {
@@ -38,4 +41,33 @@ public class LibrarySystem {
 		librarySystem.load();
 		librarySystem.listContents();
 	}
+}
+
+class Journal {
+    public String name, ISSN;
+    public int publisher;
+    public List<Article> articles = new ArrayList<Article>();
+    public boolean full_issue;
+
+    public Journal(String name, int publisher, String ISSN) {
+        this.name = name;
+        this.publisher = publisher;
+        this.ISSN = ISSN;
+    }
+
+    public void addArticle(Article article){
+        this.articles.add(article);
+        if (this.articles.size() == 3)
+            this.full_issue = true;
+    }
+}
+
+class Article {
+    public String title;
+    public List<String> authors = new ArrayList<String>();
+
+    public Article(String title, List<String> authors) {
+        this.title = title;
+        this.authors = authors;
+    }
 }
