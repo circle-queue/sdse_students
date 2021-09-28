@@ -1,8 +1,11 @@
 package edu.sdse.csvprocessor;
 
+import java.nio.file.Files;
+import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.*;
 
 public class CityCSVProcessor {
 	
@@ -13,6 +16,9 @@ public class CityCSVProcessor {
 			br.readLine();
 			
 			String line;
+            List<CityRecord> allRecords = new ArrayList<CityRecord>();
+            Map<String, List<CityRecord>> recordFor = new HashMap<String, List<CityRecord>>();
+
 			
 			while ((line = br.readLine()) != null) {
 				// Parse each line
@@ -22,11 +28,17 @@ public class CityCSVProcessor {
 				int year = convertToInt(rawValues[1]);
 				String city = convertToString(rawValues[2]);
 				int population = convertToInt(rawValues[3]);
+                CityRecord record = new CityRecord(id, year, city, population);
+
+                if (!recordFor.containsKey(city)){
+                    recordFor.put(city, new ArrayList<CityRecord>());
+                }
+                recordFor.get(city).add(record);
+                allRecords.add(record);
 				
-				System.out.println("id: " + id + ", year: " + year + ", city: " + city + ", population: " + population);
-				
-				//TODO: Extend the program to process entries!
-			}
+				System.out.println(record);
+    		}
+            //System.out.println("id: " + id + ", year: " + year + ", city: " + city + ", population: " + population);
 		} catch (Exception e) {
 			System.err.println("An error occurred:");
 			e.printStackTrace();
@@ -52,10 +64,10 @@ public class CityCSVProcessor {
 		return rawValue;
 	}
 	
-	public static final void main(String[] args) {
+	public static final void main(String[] args) throws IOException {
 		CityCSVProcessor reader = new CityCSVProcessor();
 		
-		File dataDirectory = new File("data/");
+		File dataDirectory = new File("../data");
 		File csvFile = new File(dataDirectory, "Cities.csv");
 		
 		reader.readAndProcess(csvFile);
