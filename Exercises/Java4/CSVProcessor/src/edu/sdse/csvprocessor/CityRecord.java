@@ -1,8 +1,8 @@
 package edu.sdse.csvprocessor;
 
 public class CityRecord{
-    int id, year, population;
-    String city;
+    public int id, year, population;
+    public String city;
 
     public static void main(String[] argv){
         CityRecord cr = new CityRecord(101, 1999, "Copenhagen", 100000);

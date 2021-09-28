@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.Map.*;
 import java.util.*;
 
 public class CityCSVProcessor {
@@ -38,7 +39,22 @@ public class CityCSVProcessor {
 				
 				System.out.println(record);
     		}
-            //System.out.println("id: " + id + ", year: " + year + ", city: " + city + ", population: " + population);
+            for (Entry<String, List<CityRecord>> entry : recordFor.entrySet()){
+                int entries = 0;
+                int minYear = 9999;
+                int maxYear = 0;
+                float avgPop = 0f;
+                for (CityRecord record : entry.getValue()){
+                    entries++;
+                    if (record.year < minYear)
+                        minYear = record.year;
+                    if (record.year > maxYear)
+                        maxYear = record.year;
+                    avgPop += (float) record.population;
+                }
+                System.out.println("city: " + entry.getKey() + ", entries: " + entries + ", minYear: " + minYear +
+                ", maxYear: " + maxYear + ", avgPop: " + avgPop/entries);
+            }
 		} catch (Exception e) {
 			System.err.println("An error occurred:");
 			e.printStackTrace();
@@ -64,7 +80,8 @@ public class CityCSVProcessor {
 		return rawValue;
 	}
 	
-	public static final void main(String[] args) throws IOException {
+public static final void main(String[] args) throws IOException {
+
 		CityCSVProcessor reader = new CityCSVProcessor();
 		
 		File dataDirectory = new File("../data");
